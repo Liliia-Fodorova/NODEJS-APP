@@ -1,6 +1,5 @@
-import { json } from "express";
+import createHttpError from "http-errors";
 import { Student } from "../models/student.js";
-import createHttpError from 'http-errors';
 
 export const getStudents = async (req, res) => {
   const students = await Student.find();
@@ -9,10 +8,11 @@ export const getStudents = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   const { studentId } = req.params;
-  const student = await Student.findById(studentId);
 
-   if (!student) {
-	  throw new createHttpError(404, 'Student not found');
+  const student = await Student.findOne({ _id: studentId });
+  // 1) Студента з таким id може не бути
+  if (!student) {
+    throw createHttpError(404, "Student not found");
   }
 
   res.status(200).json(student);
@@ -23,29 +23,25 @@ export const createStudent = async (req, res) => {
   res.status(201).json(student);
 };
 
-export const deleteStudent = async(req, res) => {
-  const {studentId} = req.params;
-  console.log(("=== ТИП И ЗНАЧЕНИЕ ID ==",typeof studentId, `|${studentId}|`));
-
-  const student = await Student.findByIdAndDelete(studentId);
-
-  if(!student){
+export const deleteStudent = async (req, res) => {
+  const { studentId } = req.params;
+  const student = await Student.findOneAndDelete({ _id: studentId });
+  if (!student) {
     throw createHttpError(404, "Student not found");
   }
 
-  res.status(200),json(student);
+  res.status(200).json(student);
+  // res.status(204).end();
 };
 
 export const updateStudent = async (req, res) => {
-  const {studentId} = req.params;
+  const { studentId } = req.params;
+  const student = await Student.findOneAndUpdate({ _id: studentId }, req.body, {
+    returnDocument: "after",
+  });
 
-  const student = await Student.findOneAndUpdate(
-    { _id: studentId }, req.body,
-    {returnDocument: "after" },
-  );
-
-  if(!student){
-    throw createHttpError(404, 'Student not found');
+  if (!student) {
+    throw createHttpError(404, "Student not found");
   }
 
   res.status(200).json(student);
