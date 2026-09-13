@@ -17,7 +17,7 @@ router.get('/students/:studentId', getStudentById);
 
 router.post('/students', createStudent);
 
-router.delete('/students/:studentsId', deleteStudent);
+router.delete('/students/:studentId', deleteStudent);
 
 router.patch('/students/:studentId', updateStudent);
 
