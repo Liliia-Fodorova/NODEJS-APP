@@ -3,11 +3,26 @@ import { Student } from "../models/student.js";
 
 export const getStudents = async (req, res) => {
 
-  const { page = 1, perPage = 10, gender, minAvgMark } = req.query;
+  const { page = 1,
+    perPage = 10,
+    gender,
+    minAvgMark,
+    search,
+    //сщзтування
+    sortBy = "_id",
+    sortOrder = "asc",
+  } = req.query;
 
   const skip = ( page - 1) * perPage;
 
   const studentsQuery = Student.find();
+
+  //фільтрація
+  if (search) {
+    studentsQuery.where({
+      name: { $regex: search, $options: "i" },
+    });
+  }
 
   if (gender) {
     studentsQuery.where('gender').equals(gender);
@@ -16,9 +31,10 @@ export const getStudents = async (req, res) => {
     studentsQuery.where('avgMark').gte(minAvgMark);
   }
 
+  //пагінація і сортування
 const [totalItems, students] = await Promise.all([
   studentsQuery.clone().countDocuments(),
-  studentsQuery.skip(skip).limit(perPage),
+  studentsQuery.skip(skip).limit(perPage).sort({[sortBy]: sortOrder}),
 ]);
 
   const totalPages = Math.ceil(totalItems / perPage);
