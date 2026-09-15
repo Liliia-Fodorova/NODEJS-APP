@@ -8,7 +8,7 @@ export const getStudents = async (req, res) => {
     gender,
     minAvgMark,
     search,
-    //сщзтування
+    //сортування
     sortBy = "_id",
     sortOrder = "asc",
   } = req.query;

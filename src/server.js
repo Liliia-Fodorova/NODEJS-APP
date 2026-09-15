@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 app.use(studentsRoutes);
 app.use(notFoundHandler);
-// app.use(errors());
+app.use(errors());
 app.use(errorHandler);
 
 await connectMongoDB();

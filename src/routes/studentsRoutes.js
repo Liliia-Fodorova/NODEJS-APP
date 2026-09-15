@@ -3,10 +3,10 @@ import { celebrate, Segments } from "celebrate";
 import { updateStudentSchema } from "../validations/studentsValidation.js";
 import { getStudentsSchema } from "../validations/studentsValidation.js";
 import {
-  createStudent,
-  deleteStudent,
   getStudents,
   getStudentById,
+  createStudent,
+  deleteStudent,
   updateStudent,
 } from "../controllers/studentsController.js";
 import { createStudentSchema } from "../validations/studentsValidation.js";
