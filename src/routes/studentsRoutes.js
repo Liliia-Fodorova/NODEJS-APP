@@ -1,7 +1,5 @@
 import { Router } from "express";
 import { celebrate, Segments } from "celebrate";
-import { updateStudentSchema } from "../validations/studentsValidation.js";
-import { getStudentsSchema } from "../validations/studentsValidation.js";
 import {
   getStudents,
   getStudentById,
@@ -9,12 +7,18 @@ import {
   deleteStudent,
   updateStudent,
 } from "../controllers/studentsController.js";
-import { createStudentSchema } from "../validations/studentsValidation.js";
-import { studentIdParamSchema } from "../validations/studentsValidation.js";
+import {
+  createStudentSchema,
+  getStudentsSchema,
+  studentIdParamSchema,
+  updateStudentSchema
+} from "../validations/studentsValidation.js";
+import { authenticate } from "../middlware/authenticate.js";
 
 
 const router = Router();
 
+router.use('/students', authenticate);
 
 router.get('/students', celebrate(getStudentsSchema), getStudents);
 
