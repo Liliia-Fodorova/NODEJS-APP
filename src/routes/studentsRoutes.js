@@ -13,7 +13,7 @@ import {
   studentIdParamSchema,
   updateStudentSchema
 } from "../validations/studentsValidation.js";
-import { authenticate } from "../middlware/authenticate.js";
+import { authenticate } from "../middleware/authenticate.js";
 
 
 const router = Router();
